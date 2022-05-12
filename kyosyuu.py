@@ -60,7 +60,7 @@ time.sleep(2)
 #持ち予約画面に移動
 driver.find_element(By.ID, "btnMenu_YoyakuItiran").click()
 time.sleep(2)
-#持ち予約の親要素idがlst_lc1, lst_lc2, ...であることを利用し、xpathで全ての持ち予約をリストで取得
+#持ち予約の親要素idがlst_lc1, lst_lc2, ...であることを利用し、xpathで全ての持ち予約から日付をリストで取得
 bookings = driver.find_elements(By.XPATH, "//*[@id=\"lst_lc\"]/div/div[@class=\"blocks\"]/div[1]/span")
 
 #一つ以上の持ち予約があれば
@@ -70,7 +70,7 @@ if bookings:
     #持ち予約を格納するリスト
     bookings_list = []
     for i in bookings:
-        #要素をstr型で取得
+        #要素のテキストをstr型で取得
         temp = i.get_attribute("textContent")
         #取得してきた持ち予約は「2022/3/1（担当者：hogehoge）」のようになっているので、2022/3/1の部分だけを取り出す
         target = '('
@@ -98,7 +98,7 @@ for i in range(1000):
     #空きなら「〇」、そうでなければ「×」と表示されているので、その要素をクラス名で指定してすべて取得
     for day in driver.find_elements(by=By.CLASS_NAME, value="badge"):
         if day.text != "×":
-            #〇×要素の親要素に割り振られたidが、明日の予約なら「id=hoge1」、明後日なら「id=hoge2」となっていて都合がいいので、id名の番号だけをxpathで取得してくる
+            #〇×要素の3つ上の親要素の子要素の一つに割り振られたidが、明日の予約なら「id=hoge1」、明後日なら「id=hoge2」となっていて都合がいいので、id名の番号だけをxpathで取得してくる
             oya_id = day.find_element(By.XPATH, "(../../../preceding-sibling::input)[last()]")
             oya_id = oya_id.get_attribute("id")[-1]
             #ng_flagはその予約がday_rangeを超えていたり、ngday_listに該当したりするとTrue。
