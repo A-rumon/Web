@@ -1,3 +1,10 @@
+"""
+教習所の予約状況を監視し、空きがあればGmailにメールを送って知らせるプログラム。
+既に予約を入れてある日は避ける（一日一時限）。
+ngday_listに手動で入力すれば任意の日を避けることもできる。ただし、日付が変わるとズレるので毎日入力し直す必要がある。
+day_rangeを変更すれば今日から何日以内の予約を狙うか決められる。
+"""
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
@@ -7,13 +14,6 @@ import smtplib
 from email.mime.text import MIMEText
 from email.utils import formatdate
 
-from sqlalchemy import false, true
-"""
-教習所の予約状況を監視し、空きがあればGmailにメールを送って知らせるプログラム。
-既に予約を入れてある日は避ける（一日一時限）。
-ngday_listに手動で入力すれば任意の日を避けることもできる。ただし、日付が変わるとズレるので毎日入力し直す必要がある。
-day_rangeを変更すれば今日から何日以内の予約を狙うか決められる。
-"""
 
 #メールの生成
 def create_message(from_addr, to_addr, subject, body):
